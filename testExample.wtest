@@ -1,4 +1,4 @@
-import example.pepita
+import example.*
 
 describe "group of tests for pepita" {
 
@@ -6,4 +6,29 @@ describe "group of tests for pepita" {
     assert.equals(100, pepita.energy())
   }
 
+}
+
+describe "test universidad y profesionales" {
+  const sanMartin = new Universidad(provincias = "Buenos Aires", honorariosPorHora = 3500)
+  const rosario = new Universidad(provincias = "Santa Fe", honorariosPorHora = 2800)
+  const corrientes = new Universidad(provincias = "Corrientes", honorariosPorHora = 4200)
+  const hurlingham = new Universidad(provincias = "Buenos Aires", honorariosPorHora = 8800)
+
+  const juana = new ProfesionalesVinculadosAUniversidad(universidad = rosario)
+  const melina = new ProfesionalAsociadosLitoral(universidad = corrientes)
+  const rocio = new ProfesionalLibre(universidad = hurlingham, provincias = ["Buenos Aires", "Santa Fe", "Cordoba"], honorariosPorHora = 5000)
+  const luciana = new ProfesionalLibre(universidad = rosario, provincias = ["Santa Fe", "Entre Rios"], honorariosPorHora = 3200)
+
+  const empresa1 = new Empresa(profesionales = [juana, melina, rocio, luciana], honorariosPorHora = 3000)
+  test "test empresa" {
+    assert.equals(2, empresa1.estudiaronEnUniversidad(rosario))
+    assert.equals(1, empresa1.estudiaronEnUniversidad(hurlingham))
+    assert.notThat(empresa1.estudiaronEnUniversidad(sanMartin))
+    empresa1.profesionalesCaros(499)
+    assert.equals([rocio], empresa1.profesionalesCaros(499))
+    empresa1.universidadesFormadas()
+    assert.equals([rosario, corrientes, hurlingham], empresa1.universidadesFormadas())
+    empresa1.masBarato()
+    assert.equals(juana, empresa1.masBarato())
+  }
 }
